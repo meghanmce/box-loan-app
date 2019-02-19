@@ -15,24 +15,7 @@ adminAPIClient.users.get(adminAPIClient.CURRENT_USER_ID)
 		console.log("current user name ", currentUser.name)
 	});
 
-// 	adminAPIClient.enterprise.addUser(
-// 		'MEGT34EST322@gmail.com',
-// 		'Meghan Mac',
-// 		{
-// 			role: client.enterprise.userRoles.USER,
-// 			address: '424 wall st'
-// 		})
-// 		.then(currentUser =>  console.log(currentUser.name, "is logged in"))
-
-	
-// 	var stream = fs.createReadStream('/Users/meghanmceneaney/Desktop/screenshot.png');
-// 	var folderID = "0";
-// 	client.files.uploadFile(folderID, 'meghanscr3e343ensho2t.png', stream)
-// 		.then(file => {
-// 			// ...
-// 		});
-
-// Handlebars
+	// Handlebars
 app.engine('hbs', exphbs({
 	defaultLayout: 'main',
 	extname: '.hbs'
