@@ -4,16 +4,16 @@ const app = require('express')();				// Initialize and create Express App
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');  // exposes submitted form values on req.body in your route handlers
 const session = require('express-session');
-var sdkConfig = require('./config.json'); 
-var sdk = BoxSDK.getPreconfiguredInstance(sdkConfig); // Instantiate instance of SDK using generated JSON config
+const sdkConfig = require('./config.json'); 
+const sdk = BoxSDK.getPreconfiguredInstance(sdkConfig); // Instantiate instance of SDK using generated JSON config
 
 // Get the app admin account, used to create and manage app user accounts
 var adminAPIClient = sdk.getAppAuthClient('enterprise')
 
-adminAPIClient.users.get(adminAPIClient.CURRENT_USER_ID)
-	.then(currentUser => {
-		console.log("current user name ", currentUser.name)
-	});
+// adminAPIClient.users.get(adminAPIClient.CURRENT_USER_ID)
+// 	.then(currentUser => {
+// 		console.log("current user name ", currentUser.name)
+// 	});
 
 	// Handlebars
 app.engine('hbs', exphbs({
@@ -36,7 +36,32 @@ app.use(bodyParser.urlencoded({
 
 app.get('/signup', (req, res) => res.render('signup'))
 
-app.get('/uploadfiles', (req, res) => res.render('uploadfiles'))
+app.get('/uploadfiles', (req, res) => {
+	res.render('uploadfiles')
+
+		// create a new folder with their user name
+		adminAPIClient.folders.create('0', req.session.userName)
+		.then(folder => {
+			console.log("folder id is: ", folder.id)
+		});
+
+	req.session.userName
+	req.session.userID
+	console.log("currently: ", req.session.userName, " is logged in");
+	searchFolder = req.session.userName
+	console.log("looking for: ", searchFolder, "'s folder");
+	
+	adminAPIClient.search.query(
+		searchFolder,
+		{
+			id: ,
+			limit: 200,
+			offset: 0
+		})
+		.then(results => {
+			console.log("here are the search results: ", results)
+		});
+})
 
 app.post('/signup', function(req, res) {
 
@@ -56,18 +81,11 @@ app.post('/signup', function(req, res) {
 			});
 			return;
 		}
-
 		// If the user was created correctly, set up their logged-in session
 		req.session.name = req.body.name;
 		req.session.userID = data.id;
 		req.session.userName = data.name;
 		res.redirect('/uploadfiles');
-
-		// If the user was created correctly, create a new folder with their user name
-		adminAPIClient.folders.create('0', req.session.userName)
-		.then(folder => {
-			console.log("folder id is: ", folder.id)
-		});
 	}));
 });
 

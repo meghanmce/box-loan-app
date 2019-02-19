@@ -1,17 +1,9 @@
 <!-- USING UI ELEMENTS CONTENT UPLOADER -->
-    <!-- polyfill.io only loads the polyfills your browser needs -->
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6,Intl"></script>
-    <!-- Alternatively, use polyfill hosted on the Box CDN -->
-    <script src="https://cdn01.boxcdn.net/polyfills/core-js/2.5.3/core.min.js"></script> 
-    <!-- Latest version of the uploader css for your locale -->
-    <link rel="stylesheet" href="https://cdn01.boxcdn.net/platform/elements/9.1.1/en-US/uploader.css" />
-    <!-- Latest version of the uploader js for your locale -->
-    <script src="https://cdn01.boxcdn.net/platform/elements/9.1.1/en-US/uploader.js"></script>
 
     <div class="uploader" style="height:300px"></div>
     <script>
-      	var folderId = '0';
-      	var accessToken = '7sEBCYX9XT0ZG87LNpZbgTQNLyVbNIN5'; //TODO: get user access token. using dev token as a placeholder
+      	var folderId = {{folderID}};
+      	var accessToken = 'ytE1dXWZmhpDgheSYxDkTdwGPEzhR6oY'; //TODO: get user access token. using dev token as a placeholder
       	var uploader = new Box.ContentUploader();
       	uploader.show(folderId, accessToken, {
             container: '.uploader'
