@@ -1,8 +1,9 @@
-# box-loan-app
-Bank Loan App
+# Bank Loan Application
+
 ## To run portal app :sparkling_heart:
 `
 npm install
+
 node app.js
 `
 
