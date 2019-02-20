@@ -1,92 +1,52 @@
 const BoxSDK = require('box-node-sdk');  // Box SDK
-const fs = require('fs');                // File system for config
-const app = require('express')();				// Initialize and create Express App
+const express = require('express');	
+const app = express();
 const exphbs = require('express-handlebars');
-const bodyParser = require('body-parser');  // exposes submitted form values on req.body in your route handlers
-const session = require('express-session');
-const sdkConfig = require('./config.json'); 
-const sdk = BoxSDK.getPreconfiguredInstance(sdkConfig); // Instantiate instance of SDK using generated JSON config
+// const path = require('path');
+const fs = require('fs');
+const session = require('express-session')
+const bodyParser = require('body-parser');  // Exposes submitted form values on req.body in route handlers
 
-// Get the app admin account, used to create and manage app user accounts
-var adminAPIClient = sdk.getAppAuthClient('enterprise')
+var sdkConfig = require('./config.json');
+var sdk = BoxSDK.getPreconfiguredInstance(sdkConfig);
 
-// adminAPIClient.users.get(adminAPIClient.CURRENT_USER_ID)
-// 	.then(currentUser => {
-// 		console.log("current user name ", currentUser.name)
-// 	});
+app.use(express.static('public')) // read in static css file
 
-	// Handlebars
+// Get the service account client, used to create and manage app user accounts
+var client = sdk.getAppAuthClient('enterprise');
+
+// Handlebars
 app.engine('hbs', exphbs({
 	defaultLayout: 'main',
 	extname: '.hbs'
 }))
 app.set('view engine', 'hbs')
 
-// Set up sessions, so we can log users in and out
+// parse POST bodies for form submissions
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
+
+// Set up sessions 
 app.use(session({
 	secret: 'session secret',
 	resave: false,
 	saveUninitialized: false
 }));
 
-// parse POST bodies for form submissions
-app.use(bodyParser.urlencoded({
-	extended: false
-}));
+app.get('/', (req,res) => res.render('upload'))
 
-app.get('/signup', (req, res) => res.render('signup'))
+app.get('/success', (req,res) => res.render('success'))
 
-app.get('/uploadfiles', (req, res) => {
-	res.render('uploadfiles')
-
-		// create a new folder with their user name
-		adminAPIClient.folders.create('0', req.session.userName)
-		.then(folder => {
-			console.log("folder id is: ", folder.id)
+//	Create a new folder with their user name and place the file in their folder
+app.post('/', (req,res) => {	
+	client.folders.create('0', 'New Client')
+		.then(folder => {			
+			console.log(folder.id)
+			var stream = fs.createReadStream('/Users/meghanmceneaney/Desktop/MeghanResume.pdf');
+			client.files.uploadFile(folder.id, 'clientapp.pdf', stream) 
 		});
-
-	req.session.userName
-	req.session.userID
-	console.log("currently: ", req.session.userName, " is logged in");
-	searchFolder = req.session.userName
-	console.log("looking for: ", searchFolder, "'s folder");
-	
-	adminAPIClient.search.query(
-		searchFolder,
-		{
-			id: ,
-			limit: 200,
-			offset: 0
-		})
-		.then(results => {
-			console.log("here are the search results: ", results)
-		});
-})
-
-app.post('/signup', function(req, res) {
-
-	var requestParams = {
-		body: {
-			name: req.body.name,
-			is_platform_access_only: true
-		}
-	};
-	// Create a new Box user record for this user with their name
-	adminAPIClient.post('/users', requestParams, adminAPIClient.defaultResponseHandler(function(err, data) {
-
-		if (err) {
-			res.render('/', {
-				error: 'An error occurred during signup - ' + err.message,
-				errorDetails: util.inspect(err)
-			});
-			return;
-		}
-		// If the user was created correctly, set up their logged-in session
-		req.session.name = req.body.name;
-		req.session.userID = data.id;
-		req.session.userName = data.name;
-		res.redirect('/uploadfiles');
-	}));
+	res.redirect('/success')
 });
 
 app.listen(3000)

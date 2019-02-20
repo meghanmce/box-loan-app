@@ -1,0 +1,31 @@
+{
+  "name": "box_app",
+  "version": "1.0.0",
+  "description": "Bank Loan App",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "box-node-sdk": "^1.26.1",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.6",
+    "express-formidable": "^1.2.0",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "formidable": "^1.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meghanmce/box-loan-app.git"
+  },
+  "author": "Meghan McEneaney",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meghanmce/box-loan-app/issues"
+  },
+  "homepage": "https://github.com/meghanmce/box-loan-app#readme"
+}
