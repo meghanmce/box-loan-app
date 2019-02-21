@@ -31,14 +31,18 @@ app.get('/', (req,res) => res.render('upload'))
 
 app.get('/success', (req,res) => res.render('success'))
 
-//	Create a new folder with their user name and place the file in their folder
-//  If there's a folder with the same name, add file to that folder
+// Create a new folder with their user name and place the file in their folder
+// If there's a folder with the same name, add file to that folder
 
 app.post('/', (req,res) => {
 	client.search.query(
 	req.fields.name,
 	{
-		type: 'folder'
+		type: 'folder',
+		content_types: 'name',
+		offset: 0,
+		limit: 1,
+		fields: 'id'
 	})
 	.then(results => {
 		if (results["total_count"] > 0) {
