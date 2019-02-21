@@ -8,6 +8,7 @@ const sdkConfig = require('./config.json');
 const sdk = BoxSDK.getPreconfiguredInstance(sdkConfig);
 const formidableMiddleware = require('express-formidable');
 
+
 app.use(express.static('public')) // Read in static css file
 
 app.use(formidableMiddleware());
@@ -32,7 +33,7 @@ app.get('/', (req,res) => res.render('upload'))
 app.get('/success', (req,res) => res.render('success'))
 
 // Create a new folder with their user name and place the file in their folder
-// If there's a folder with the same name, add file to that folder
+// If there's a duplicate folder name submitted, add file to that folder
 
 app.post('/', (req,res) => {
 	client.search.query(
