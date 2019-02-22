@@ -9,9 +9,7 @@
     "express": "^4.16.4",
     "express-formidable": "^1.2.0",
     "express-handlebars": "^3.0.0",
-    "express-session": "^1.15.6",
-    "fs": "^0.0.1-security",
-    "path": "^0.12.7"
+    "fs": "^0.0.1-security"
   },
   "devDependencies": {},
   "scripts": {
