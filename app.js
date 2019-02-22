@@ -8,33 +8,27 @@ const sdkConfig = require('./config.json');
 const sdk = BoxSDK.getPreconfiguredInstance(sdkConfig);
 const formidableMiddleware = require('express-formidable');
 
-
-app.use(express.static('public')) // Read in static css file
-
+app.use(express.static('public'));
 app.use(formidableMiddleware());
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
 
 // Get the service account client, used to create and manage app user accounts
 var client = sdk.getAppAuthClient('enterprise');
 
-// Handlebars
 app.engine('hbs', exphbs({
 	defaultLayout: 'main',
 	extname: '.hbs'
 }))
 app.set('view engine', 'hbs')
 
-// Parse POST bodies for form submissions
-app.use(bodyParser.urlencoded({
-	extended: false
-}));
-
 app.get('/', (req,res) => res.render('upload'))
 
 app.get('/success', (req,res) => res.render('success'))
 
 // Create a new folder with their user name and place the file in their folder
-// If there's a duplicate folder name submitted, add file to that folder
-
+// If there's a duplicate folder name, add file to that folder
 app.post('/', (req,res) => {
 	client.search.query(
 	req.fields.name,

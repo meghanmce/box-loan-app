@@ -138,8 +138,8 @@ input[type=text]:hover {
 }
 
 .file-upload .file-select:hover .file-select-button{
-  border-color: var(--darkGray);
-  background: var(--darkGray);
+  border-color: var(--darkBlue);
+  background: var(--darkBlue);
   color: var(--justWhite);
   transition:all .2s ease-in-out;
   -moz-transition:all .2s ease-in-out;
@@ -314,4 +314,3 @@ label {
     width: 250px;
   }
 }
-
