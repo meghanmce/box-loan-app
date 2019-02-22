@@ -58,7 +58,6 @@ app.post('/', (req,res) => {
 			});
 		}
 	});
-	
 	res.redirect('/success')
 });
 

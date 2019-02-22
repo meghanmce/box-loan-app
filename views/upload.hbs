@@ -1,13 +1,33 @@
-
-<div class="container">
+<div class="grid-container">
+	<h2>Pleased to meet you</h2>
+		<p class="intro">We're here to help - Apply for a loan or refinance your existing loan today</p>
 	<form method="post" action="/" enctype="multipart/form-data">
-		<h2>Your Information</h2>
-		<label>Your Name</label>
+		<label>Full Name</label>
 		<input class="input-text" type="text" name="name">
-		<div>
-		<h2>Upload Application File</h2>
-		<input type="file" name="file">
-		<button type="submit" class="btn btn-lg btn-success">Upload</button>
+		<div class="file-upload">
+			<div class="file-select">
+				<div class="file-select-button" id="fileName">Choose File</div>
+				<div class="file-select-name" id="noFile">No file chosen...</div> 
+				<input type="file" name="file" id="chooseFile">
+			</div>
+		</div>
+		<div class="btn center">
+			<button type="submit">Submit</button>
 		</div>
 	</form>
 </div>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script>
+	$('#chooseFile').bind('change', function () {
+  var filename = $("#chooseFile").val();
+  if (/^\s*$/.test(filename)) {
+    $(".file-upload").removeClass('active');
+    $("#noFile").text("No file chosen..."); 
+  }
+  else {
+    $(".file-upload").addClass('active');
+    $("#noFile").text(filename.replace("C:\\fakepath\\", "")); 
+  }
+});
+</script>
